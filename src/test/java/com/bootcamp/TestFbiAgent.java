@@ -1,9 +1,6 @@
 package com.bootcamp;
 
-/**
- * Created by Jagpreet on 13/04/16.
- */
-public class TestFbiAgent implements Subscriber {
+public class TestFbiAgent extends FbiAgent {
 
   private int notificationCount;
 

@@ -1,9 +1,6 @@
 package com.bootcamp;
 
-/**
- * Created by Jagpreet on 13/04/16.
- */
-public class TestPoliceDepartment implements Subscriber {
+public class TestPoliceDepartment extends PoliceDepartment {
 
   private int noOfCarsNotFound;
 
