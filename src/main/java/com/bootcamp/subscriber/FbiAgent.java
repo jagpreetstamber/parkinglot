@@ -1,4 +1,4 @@
-package com.bootcamp;
+package com.bootcamp.subscriber;
 
 import com.bootcamp.event.CarNotFoundEvent;
 import com.bootcamp.subscriber.CarNotFoundSubscriber;

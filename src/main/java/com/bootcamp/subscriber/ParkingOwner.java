@@ -1,4 +1,4 @@
-package com.bootcamp;
+package com.bootcamp.subscriber;
 
 import com.bootcamp.subscriber.HasSpaceSubscriber;
 import com.bootcamp.subscriber.ParkingFullSubscriber;

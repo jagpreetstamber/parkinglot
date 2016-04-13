@@ -1,6 +1,6 @@
 package com.bootcamp.stubs;
 
-import com.bootcamp.ParkingOwner;
+import com.bootcamp.subscriber.ParkingOwner;
 
 public class TestParkingOwner extends ParkingOwner {
 

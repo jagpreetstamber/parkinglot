@@ -1,6 +1,6 @@
 package com.bootcamp.stubs;
 
-import com.bootcamp.FbiAgent;
+import com.bootcamp.subscriber.FbiAgent;
 
 public class TestFbiAgent extends FbiAgent {
 
