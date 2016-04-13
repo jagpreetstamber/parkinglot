@@ -1,5 +1,6 @@
 package com.bootcamp;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -11,17 +12,20 @@ import static org.junit.Assert.assertTrue;
 
 public class ParkingLotTest {
 
-  private ParkingOwner owner;
-  private List<Subscriber> agents;
+  private TestParkingOwner owner;
+  private List<Subscriber> eightyPercentSubscribers;
+  private List<Subscriber> carNotFoundSubscribers;
 
-  public ParkingLotTest() {
+  @Before
+  public void setUp() throws Exception {
     this.owner = new TestParkingOwner();
-    this.agents = new ArrayList<Subscriber>();
+    this.eightyPercentSubscribers = new ArrayList<Subscriber>();
+    this.carNotFoundSubscribers = new ArrayList<Subscriber>();
   }
 
   @Test
   public void testParkingIsSuccessful() throws Exception {
-    ParkingLot parkingLot = new ParkingLot(2, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(2, owner);
 
     Car car = new Car();
     Response response = parkingLot.park(car);
@@ -33,7 +37,7 @@ public class ParkingLotTest {
   public void testParkingCarTwice() throws Exception {
     String expected = "Car Already Parked";
     Car car = new Car();
-    ParkingLot parkingLot = new ParkingLot(2, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(2, owner);
 
     Response response = parkingLot.park(car);
     response = parkingLot.park(car);
@@ -45,7 +49,7 @@ public class ParkingLotTest {
   @Test
   public void testParkingIsFull() throws Exception {
 
-    ParkingLot parkingLot = new ParkingLot(0, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(0, owner);
     String expected = "Parking lot is full";
     Car car = new Car();
 
@@ -57,7 +61,7 @@ public class ParkingLotTest {
 
   @Test
   public void testRetrieveIsSuccessful() throws Exception {
-    ParkingLot parkingLot = new ParkingLot(2, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(2, owner);
 
     Car car = new Car();
     Response response = parkingLot.park(car);
@@ -70,7 +74,7 @@ public class ParkingLotTest {
   @Test
   public void testRetrieveACarThatIsNotParked() throws Exception {
     String expected = "Car not Parked";
-    ParkingLot parkingLot = new ParkingLot(2, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(2, owner);
     Car car = new Car();
 
     Response response = parkingLot.retrieveCar(car);
@@ -82,8 +86,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerNotificationWhenParkingLotIsFull() throws Exception {
     int expected = 1;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
 
@@ -96,8 +99,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerMultipleNotificationWhenParkingLotIsFull() throws Exception {
     int expected = 3;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
 
@@ -113,8 +115,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerShouldNotGetNotificationIfParkingIsFullAndSomeoneTriesToPark() throws Exception {
     int expected = 1;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
     Car car1 = new Car();
@@ -128,8 +129,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerNotificationWhenParkingLotIsHasSpace() throws Exception {
     int expected = 1;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
 
@@ -142,8 +142,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerMultipleNotificationWhenParkingLotHasSpace() throws Exception {
     int expected = 3;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
 
@@ -160,8 +159,7 @@ public class ParkingLotTest {
   @Test
   public void testOwnerShouldNotGetNotificationIfParkingIsFullAndSomeoneTriesToRetriveUnparkedCar() throws Exception {
     int expected = 0;
-    TestParkingOwner owner = new TestParkingOwner();
-    ParkingLot parkingLot = new ParkingLot(1, owner, agents);
+    ParkingLot parkingLot = new ParkingLot(1, owner);
 
     Car car = new Car();
     Car car1 = new Car();
@@ -175,10 +173,10 @@ public class ParkingLotTest {
   @Test
   public void testFbiAgentShouldGetNotificationIfParkingIs80PercentFull() throws Exception {
     int expected = 1;
-    TestParkingOwner owner = new TestParkingOwner();
     TestFbiAgent agent = new TestFbiAgent();
-    agents.add(agent);
-    ParkingLot parkingLot = new ParkingLot(5, owner, agents);
+    eightyPercentSubscribers.add(agent);
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
     Car car = new Car();
     Car car1 = new Car();
@@ -198,10 +196,10 @@ public class ParkingLotTest {
   @Test
   public void testFbiAgentShouldGetNotificationIfParkingIs80PercentOnRetreive() throws Exception {
     int expected = 2;
-    TestParkingOwner owner = new TestParkingOwner();
     TestFbiAgent agent = new TestFbiAgent();
-    agents.add(agent);
-    ParkingLot parkingLot = new ParkingLot(5, owner, agents);
+    eightyPercentSubscribers.add(agent);
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
     Car car = new Car();
     Car car1 = new Car();
@@ -222,12 +220,12 @@ public class ParkingLotTest {
   }
 
   @Test
-  public void testFbiAgentShouldGetMMultipleNotificationIfParkingIs80PercentOnRetreive() throws Exception {
+  public void testFbiAgentShouldNotGetMMultipleNotificationIfParkingIs80PercentOnRetreive() throws Exception {
     int expected = 2;
-    TestParkingOwner owner = new TestParkingOwner();
     TestFbiAgent agent = new TestFbiAgent();
-    agents.add(agent);
-    ParkingLot parkingLot = new ParkingLot(5, owner, agents);
+    eightyPercentSubscribers.add(agent);
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
     Car car = new Car();
     Car car1 = new Car();
@@ -248,5 +246,37 @@ public class ParkingLotTest {
     parkingLot.retrieveCar(car4);
 
     assertEquals(expected, agent.getNotificationCount());
+  }
+
+  @Test
+  public void testPoliceDepartmentGetsNotificationIfCarIsNotFound() throws Exception {
+    int expected = 1;
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    TestPoliceDepartment police = new TestPoliceDepartment();
+    carNotFoundSubscribers.add(police);
+    parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
+
+    Car car = new Car();
+
+    parkingLot.retrieveCar(car);
+
+    assertEquals(expected, police.getNoOfCarsNotFound());
+  }
+
+  @Test
+  public void testPoliceDepartmentGetsMultipleNotificationIfMultipleCarsNotFound() throws Exception {
+    int expected = 2;
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    TestPoliceDepartment police = new TestPoliceDepartment();
+    carNotFoundSubscribers.add(police);
+    parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
+
+    Car car = new Car();
+    Car car1 = new Car();
+
+    parkingLot.retrieveCar(car);
+    parkingLot.retrieveCar(car1);
+
+    assertEquals(expected, police.getNoOfCarsNotFound());
   }
 }

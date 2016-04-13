@@ -18,16 +18,23 @@ public class ParkingLot {
   private List<Integer> freeSlots;
   private Map<Car, Integer> parkingSlots;
   private List<Subscriber> eightyPercentSubscribers;
+  private List<Subscriber> carNotFoundSubscribers;
 
-  public ParkingLot(int noOfSlots, ParkingOwner owner,
-                    List<Subscriber> eightyPercentSubscribers) {
+  public ParkingLot(int noOfSlots, ParkingOwner owner) {
     this.noOfSlots = noOfSlots;
     this.owner = owner;
-    this.eightyPercentSubscribers = eightyPercentSubscribers;
     freeSlots = new ArrayList<Integer>();
     occupiedSlots = new ArrayList<Integer>();
     this.parkingSlots = new HashMap<Car, Integer>();
     initializeSlots(noOfSlots);
+  }
+
+  public void setCarNotFoundSubscribers(List<Subscriber> carNotFoundSubscribers) {
+    this.carNotFoundSubscribers = carNotFoundSubscribers;
+  }
+
+  public void setEightyPercentSubscribers(List<Subscriber> eightyPercentSubscribers) {
+    this.eightyPercentSubscribers = eightyPercentSubscribers;
   }
 
   public Response park(Car car) {
@@ -82,17 +89,19 @@ public class ParkingLot {
   }
 
   private void notifyAgentOnPark() {
-    if ((((occupiedSlots.size() * 100) / noOfSlots) >= 80)
-            &&
-            ((((occupiedSlots.size() - 1) * 100) / noOfSlots) < 80)) {
+    boolean areOccupiedSlotMoreThanEightyPercent = ((occupiedSlots.size() * 100) / noOfSlots) >= 80;
+    boolean wasItMoreThanEightyPercentEarlier = (((occupiedSlots.size() - 1) * 100) / noOfSlots) < 80;
+
+    if (areOccupiedSlotMoreThanEightyPercent && wasItMoreThanEightyPercentEarlier) {
       notifyEightyPercentSubscribers();
     }
   }
 
   private void notifyAgentOnRetrieve() {
-    if (((((occupiedSlots.size() + 1) * 100) / noOfSlots) >= 80)
-            &&
-            (((occupiedSlots.size() * 100) / noOfSlots) < 80)) {
+    boolean wasItMoreThanEightyPercentEarlier = (((occupiedSlots.size() + 1) * 100) / noOfSlots) >= 80;
+    boolean areOccupiedSlotsLessThanEightyPercent = ((occupiedSlots.size() * 100) / noOfSlots) < 80;
+
+    if (wasItMoreThanEightyPercentEarlier && areOccupiedSlotsLessThanEightyPercent) {
       notifyEightyPercentSubscribers();
     }
   }
@@ -117,9 +126,18 @@ public class ParkingLot {
     }
   }
 
+  private void notifyCarNotFoundSubscribers() {
+    if (carNotFoundSubscribers != null) {
+      for (Subscriber subscriber : carNotFoundSubscribers) {
+        subscriber.notifyParty();
+      }
+    }
+  }
+
   private Integer getSlotForCar(Car car) throws NotParkedException {
     Integer slotNo = parkingSlots.get(car);
     if (slotNo == null) {
+      notifyCarNotFoundSubscribers();
       throw new NotParkedException();
     }
     return slotNo;
