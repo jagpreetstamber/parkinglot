@@ -1,5 +1,6 @@
 package com.bootcamp;
 
+import com.bootcamp.event.CarNotFoundEvent;
 import com.bootcamp.exception.AlreadyParkedException;
 import com.bootcamp.exception.NotParkedException;
 import com.bootcamp.exception.ParkingFullException;
@@ -109,7 +110,7 @@ public class ParkingLot {
   private void notifyEightyPercentSubscribers() {
     if (eightyPercentSubscribers != null) {
       for (Subscriber subscriber : eightyPercentSubscribers) {
-        subscriber.notifyParty();
+        subscriber.notifyParty(null);
       }
     }
   }
@@ -126,10 +127,11 @@ public class ParkingLot {
     }
   }
 
-  private void notifyCarNotFoundSubscribers() {
+  private void notifyCarNotFoundSubscribers(Car car) {
+    CarNotFoundEvent event = new CarNotFoundEvent(car);
     if (carNotFoundSubscribers != null) {
       for (Subscriber subscriber : carNotFoundSubscribers) {
-        subscriber.notifyParty();
+        subscriber.notifyParty(event);
       }
     }
   }
@@ -137,7 +139,7 @@ public class ParkingLot {
   private Integer getSlotForCar(Car car) throws NotParkedException {
     Integer slotNo = parkingSlots.get(car);
     if (slotNo == null) {
-      notifyCarNotFoundSubscribers();
+      notifyCarNotFoundSubscribers(car);
       throw new NotParkedException();
     }
     return slotNo;

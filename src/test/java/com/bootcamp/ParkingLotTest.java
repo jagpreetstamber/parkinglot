@@ -1,5 +1,9 @@
 package com.bootcamp;
 
+import com.bootcamp.event.CarNotFoundEvent;
+import com.bootcamp.stubs.TestFbiAgent;
+import com.bootcamp.stubs.TestParkingOwner;
+import com.bootcamp.stubs.TestPoliceDepartment;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -277,5 +281,22 @@ public class ParkingLotTest {
     parkingLot.retrieveCar(car1);
 
     assertEquals(expected, police.getNoOfCarsNotFound());
+  }
+
+  @Test
+  public void testCorrectEventIsPassedToPoliceDepartment() throws Exception {
+    int expected = 1;
+    ParkingLot parkingLot = new ParkingLot(5, owner);
+    TestPoliceDepartment police = new TestPoliceDepartment();
+    carNotFoundSubscribers.add(police);
+    parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
+    Car exceptedCar = new Car();
+
+    parkingLot.retrieveCar(exceptedCar);
+    CarNotFoundEvent event = (CarNotFoundEvent) police.getEvent();
+    Car actualCar = event.getCar();
+
+    assertEquals(expected, police.getNoOfCarsNotFound());
+    assertEquals(exceptedCar, actualCar);
   }
 }
