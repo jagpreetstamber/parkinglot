@@ -5,6 +5,8 @@ import com.bootcamp.exception.AlreadyParkedException;
 import com.bootcamp.exception.NotParkedException;
 import com.bootcamp.exception.ParkingFullException;
 import com.bootcamp.exception.ParkingLotException;
+import com.bootcamp.subscriber.CarNotFoundSubscriber;
+import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +20,8 @@ public class ParkingLot {
   private List<Integer> occupiedSlots;
   private List<Integer> freeSlots;
   private Map<Car, Integer> parkingSlots;
-  private List<Subscriber> eightyPercentSubscribers;
-  private List<Subscriber> carNotFoundSubscribers;
+  private List<EightyPercentParkingSubscriber> eightyPercentSubscribers;
+  private List<CarNotFoundSubscriber> carNotFoundSubscribers;
 
   public ParkingLot(int noOfSlots, ParkingOwner owner) {
     this.noOfSlots = noOfSlots;
@@ -30,11 +32,11 @@ public class ParkingLot {
     initializeSlots(noOfSlots);
   }
 
-  public void setCarNotFoundSubscribers(List<Subscriber> carNotFoundSubscribers) {
+  public void setCarNotFoundSubscribers(List<CarNotFoundSubscriber> carNotFoundSubscribers) {
     this.carNotFoundSubscribers = carNotFoundSubscribers;
   }
 
-  public void setEightyPercentSubscribers(List<Subscriber> eightyPercentSubscribers) {
+  public void setEightyPercentSubscribers(List<EightyPercentParkingSubscriber> eightyPercentSubscribers) {
     this.eightyPercentSubscribers = eightyPercentSubscribers;
   }
 
@@ -109,8 +111,8 @@ public class ParkingLot {
 
   private void notifyEightyPercentSubscribers() {
     if (eightyPercentSubscribers != null) {
-      for (Subscriber subscriber : eightyPercentSubscribers) {
-        subscriber.notifyParty(null);
+      for (EightyPercentParkingSubscriber subscriber : eightyPercentSubscribers) {
+        subscriber.notifyParkingEightyPercentFull();
       }
     }
   }
@@ -130,8 +132,8 @@ public class ParkingLot {
   private void notifyCarNotFoundSubscribers(Car car) {
     CarNotFoundEvent event = new CarNotFoundEvent(car);
     if (carNotFoundSubscribers != null) {
-      for (Subscriber subscriber : carNotFoundSubscribers) {
-        subscriber.notifyParty(event);
+      for (CarNotFoundSubscriber subscriber : carNotFoundSubscribers) {
+        subscriber.notifyCarNotFound(event);
       }
     }
   }

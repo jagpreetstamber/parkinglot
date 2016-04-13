@@ -16,7 +16,7 @@ public class PoliceDepartmentTest {
     Car missingCar = new Car("NY 12 AB 1234");
     CarNotFoundEvent event = new CarNotFoundEvent(missingCar);
 
-    department.notifyParty(event);
+    department.notifyCarNotFound(event);
 
     assertEquals(expectedReportCount, apbStub.getNoOfReportsSubmitted());
   }

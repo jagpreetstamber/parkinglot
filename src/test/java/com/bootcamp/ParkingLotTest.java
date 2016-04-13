@@ -4,6 +4,8 @@ import com.bootcamp.event.CarNotFoundEvent;
 import com.bootcamp.stubs.TestFbiAgent;
 import com.bootcamp.stubs.TestParkingOwner;
 import com.bootcamp.stubs.TestPoliceDepartment;
+import com.bootcamp.subscriber.CarNotFoundSubscriber;
+import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,14 +19,14 @@ import static org.junit.Assert.assertTrue;
 public class ParkingLotTest {
 
   private TestParkingOwner owner;
-  private List<Subscriber> eightyPercentSubscribers;
-  private List<Subscriber> carNotFoundSubscribers;
+  private List<EightyPercentParkingSubscriber> eightyPercentSubscribers;
+  private List<CarNotFoundSubscriber> carNotFoundSubscribers;
 
   @Before
   public void setUp() throws Exception {
     this.owner = new TestParkingOwner();
-    this.eightyPercentSubscribers = new ArrayList<Subscriber>();
-    this.carNotFoundSubscribers = new ArrayList<Subscriber>();
+    this.eightyPercentSubscribers = new ArrayList<EightyPercentParkingSubscriber>();
+    this.carNotFoundSubscribers = new ArrayList<CarNotFoundSubscriber>();
   }
 
   @Test

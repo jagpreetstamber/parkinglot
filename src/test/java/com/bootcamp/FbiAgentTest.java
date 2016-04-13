@@ -1,20 +1,20 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.stubs.FbiAgentStub;
+import com.bootcamp.stubs.TestFbiAgent;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class FbiAgentTest {
 
   @Test
   public void testPaperWorkStartsWhenCarIsNotFound() throws Exception {
-    FbiAgentStub agent = new FbiAgentStub();
+    TestFbiAgent agent = new TestFbiAgent();
     Car missingCar = new Car();
     CarNotFoundEvent event = new CarNotFoundEvent(missingCar);
 
-    agent.notifyParty(event);
+    agent.notifyCarNotFound(event);
 
     assertTrue(agent.isPaperWorkStarted());
   }

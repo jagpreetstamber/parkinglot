@@ -13,9 +13,10 @@ public class TestPoliceDepartment extends PoliceDepartment {
     super(new APB());
   }
 
-  public void notifyParty(CarNotFoundEvent e) {
+  @Override
+  public void notifyCarNotFound(CarNotFoundEvent event) {
     noOfCarsNotFound++;
-    event = e;
+    this.event = event;
   }
 
   public int getNoOfCarsNotFound() {

@@ -1,17 +1,17 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.event.Event;
+import com.bootcamp.subscriber.CarNotFoundSubscriber;
+import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 
-public class FbiAgent implements Subscriber {
+public class FbiAgent implements CarNotFoundSubscriber, EightyPercentParkingSubscriber {
 
-  public void notifyParty(Event e) {
+  public void notifyParkingEightyPercentFull() {
+    System.out.println("Hooray! Parking is 80% populated");
+  }
 
-    if(e instanceof CarNotFoundEvent) {
-      startPaperWork();
-    } else {
-      System.out.println("Hooray! Parking is 80% populated");
-    }
+  public void notifyCarNotFound(CarNotFoundEvent e) {
+    startPaperWork();
   }
 
   protected void startPaperWork() {

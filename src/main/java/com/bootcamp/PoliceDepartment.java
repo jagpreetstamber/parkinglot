@@ -1,8 +1,9 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
+import com.bootcamp.subscriber.CarNotFoundSubscriber;
 
-public class PoliceDepartment implements Subscriber<CarNotFoundEvent> {
+public class PoliceDepartment implements CarNotFoundSubscriber {
 
   private APB apb;
 
@@ -10,7 +11,7 @@ public class PoliceDepartment implements Subscriber<CarNotFoundEvent> {
     this.apb = apb;
   }
 
-  public void notifyParty(CarNotFoundEvent event) {
+  public void notifyCarNotFound(CarNotFoundEvent event) {
     Car car = event.getCar();
 
     apb.createNewReport("Car", car.getRegistrationNumber());
