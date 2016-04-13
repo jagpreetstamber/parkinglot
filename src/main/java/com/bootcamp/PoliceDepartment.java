@@ -1,28 +1,19 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.event.Event;
 
-import java.util.ArrayList;
-import java.util.List;
+public class PoliceDepartment implements Subscriber<CarNotFoundEvent> {
 
-public class PoliceDepartment implements Subscriber {
+  private APB apb;
 
-  private List<APB> reports;
-
-  public PoliceDepartment() {
-    this.reports = new ArrayList<APB>();
+  public PoliceDepartment(APB apb) {
+    this.apb = apb;
   }
 
-  public void notifyParty(Event e) {
-    CarNotFoundEvent event = (CarNotFoundEvent) e;
-
+  public void notifyParty(CarNotFoundEvent event) {
     Car car = event.getCar();
 
-    reports.add(new APB("Car", car.getRegistrationNumber()));
-  }
-
-  public List<APB> getSubmittedReports() {
-    return reports;
+    apb.createNewReport("Car", car.getRegistrationNumber());
+    apb.submitReport();
   }
 }

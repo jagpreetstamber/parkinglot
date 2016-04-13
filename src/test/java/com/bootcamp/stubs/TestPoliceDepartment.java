@@ -1,14 +1,19 @@
 package com.bootcamp.stubs;
 
+import com.bootcamp.APB;
 import com.bootcamp.PoliceDepartment;
-import com.bootcamp.event.Event;
+import com.bootcamp.event.CarNotFoundEvent;
 
 public class TestPoliceDepartment extends PoliceDepartment {
 
   private int noOfCarsNotFound;
-  private Event event;
+  private CarNotFoundEvent event;
 
-  public void notifyParty(Event e) {
+  public TestPoliceDepartment() {
+    super(new APB());
+  }
+
+  public void notifyParty(CarNotFoundEvent e) {
     noOfCarsNotFound++;
     event = e;
   }
@@ -17,7 +22,7 @@ public class TestPoliceDepartment extends PoliceDepartment {
     return noOfCarsNotFound;
   }
 
-  public Event getEvent() {
+  public CarNotFoundEvent getEvent() {
     return event;
   }
 }

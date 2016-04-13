@@ -293,7 +293,7 @@ public class ParkingLotTest {
     Car exceptedCar = new Car();
 
     parkingLot.retrieveCar(exceptedCar);
-    CarNotFoundEvent event = (CarNotFoundEvent) police.getEvent();
+    CarNotFoundEvent event = police.getEvent();
     Car actualCar = event.getCar();
 
     assertEquals(expected, police.getNoOfCarsNotFound());

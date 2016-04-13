@@ -2,15 +2,11 @@ package com.bootcamp;
 
 public class APB {
 
-  private String itemMissing;
-  private String itemId;
-
-  public APB(String itemMissing, String itemId) {
-    this.itemMissing = itemMissing;
-    this.itemId = itemId;
+  public void createNewReport(String itemMissing, String itemId) {
+    System.out.println("Report Created Successfully!");
   }
 
-  public String getItemId() {
-    return itemId;
+  public void submitReport() {
+    System.out.println("Submitted Successfully!");
   }
 }
