@@ -17,10 +17,13 @@ public class ParkingLot {
   private List<Integer> occupiedSlots;
   private List<Integer> freeSlots;
   private Map<Car, Integer> parkingSlots;
+  private List<Subscriber> eightyPercentSubscribers;
 
-  public ParkingLot(int noOfSlots, ParkingOwner owner) {
+  public ParkingLot(int noOfSlots, ParkingOwner owner,
+                    List<Subscriber> eightyPercentSubscribers) {
     this.noOfSlots = noOfSlots;
     this.owner = owner;
+    this.eightyPercentSubscribers = eightyPercentSubscribers;
     freeSlots = new ArrayList<Integer>();
     occupiedSlots = new ArrayList<Integer>();
     this.parkingSlots = new HashMap<Car, Integer>();
@@ -46,6 +49,7 @@ public class ParkingLot {
 
       notifyOwnerParkingIsFull();
 
+      notifyAgentOnPark();
     } catch (ParkingLotException e) {
       response.setSuccess(false);
       response.setMessage(e.getMessage());
@@ -60,7 +64,7 @@ public class ParkingLot {
     try {
       Integer slotNo = getSlotForCar(car);
       notifyOwnerParkingLotHasSpace();
-
+      notifyAgentOnRetrieve();
       parkingSlots.remove(car);
 
       freeSlots.add(slotNo);
@@ -74,6 +78,28 @@ public class ParkingLot {
       response.setMessage(e.getMessage());
     }
     return response;
+  }
+
+  private void notifyAgentOnPark() {
+    if ((((occupiedSlots.size() * 100) / noOfSlots) >= 80)
+            &&
+            ((((occupiedSlots.size() - 1) * 100) / noOfSlots) < 80)) {
+      notifyEightyPercentSubscribers();
+    }
+  }
+
+  private void notifyAgentOnRetrieve() {
+    if (((((occupiedSlots.size() + 1) * 100) / noOfSlots) >= 80)
+            &&
+            (((occupiedSlots.size() * 100) / noOfSlots) < 80)) {
+      notifyEightyPercentSubscribers();
+    }
+  }
+
+  private void notifyEightyPercentSubscribers() {
+    for (Subscriber subscriber : eightyPercentSubscribers) {
+      subscriber.notifyParty();
+    }
   }
 
   private void notifyOwnerParkingLotHasSpace() {
