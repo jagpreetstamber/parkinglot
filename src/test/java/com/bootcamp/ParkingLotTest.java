@@ -217,6 +217,32 @@ public class ParkingLotTest {
 
     parkingLot.retrieveCar(car);
     parkingLot.retrieveCar(car1);
+
+    assertEquals(expected, agent.getNotificationCount());
+  }
+
+  @Test
+  public void testFbiAgentShouldGetMMultipleNotificationIfParkingIs80PercentOnRetreive() throws Exception {
+    int expected = 2;
+    TestParkingOwner owner = new TestParkingOwner();
+    TestFbiAgent agent = new TestFbiAgent();
+    agents.add(agent);
+    ParkingLot parkingLot = new ParkingLot(5, owner, agents);
+
+    Car car = new Car();
+    Car car1 = new Car();
+    Car car2 = new Car();
+    Car car3 = new Car();
+    Car car4 = new Car();
+
+    parkingLot.park(car);
+    parkingLot.park(car1);
+    parkingLot.park(car2);
+    parkingLot.park(car3);
+    parkingLot.park(car4);
+
+    parkingLot.retrieveCar(car);
+    parkingLot.retrieveCar(car1);
     parkingLot.retrieveCar(car2);
     parkingLot.retrieveCar(car3);
     parkingLot.retrieveCar(car4);

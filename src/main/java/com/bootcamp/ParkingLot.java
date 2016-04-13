@@ -64,12 +64,13 @@ public class ParkingLot {
     try {
       Integer slotNo = getSlotForCar(car);
       notifyOwnerParkingLotHasSpace();
-      notifyAgentOnRetrieve();
+
       parkingSlots.remove(car);
 
       freeSlots.add(slotNo);
       occupiedSlots.remove(slotNo);
 
+      notifyAgentOnRetrieve();
       response.setSuccess(true);
       response.setMessage("UnParked successfully");
 
@@ -97,8 +98,10 @@ public class ParkingLot {
   }
 
   private void notifyEightyPercentSubscribers() {
-    for (Subscriber subscriber : eightyPercentSubscribers) {
-      subscriber.notifyParty();
+    if (eightyPercentSubscribers != null) {
+      for (Subscriber subscriber : eightyPercentSubscribers) {
+        subscriber.notifyParty();
+      }
     }
   }
 
