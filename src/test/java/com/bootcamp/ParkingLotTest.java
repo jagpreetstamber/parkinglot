@@ -39,8 +39,8 @@ public class ParkingLotTest {
     Car car = new Car();
     ParkingLot parkingLot = new ParkingLot(2, owner);
 
+    parkingLot.park(car);
     Response response = parkingLot.park(car);
-    response = parkingLot.park(car);
 
     assertFalse(response.isSuccess());
     assertEquals(expected, response.getMessage());
@@ -62,11 +62,10 @@ public class ParkingLotTest {
   @Test
   public void testRetrieveIsSuccessful() throws Exception {
     ParkingLot parkingLot = new ParkingLot(2, owner);
-
     Car car = new Car();
-    Response response = parkingLot.park(car);
+    parkingLot.park(car);
 
-    response = parkingLot.retrieveCar(car);
+    Response response = parkingLot.retrieveCar(car);
 
     assertTrue(response.isSuccess());
   }
