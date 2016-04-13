@@ -10,9 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Jagpreet on 13/04/16.
- */
 public class ParkingLot {
 
   private int noOfSlots;

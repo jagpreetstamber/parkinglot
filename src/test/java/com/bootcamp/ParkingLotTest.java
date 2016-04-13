@@ -6,9 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Jagpreet on 13/04/16.
- */
 public class ParkingLotTest {
 
   private ParkingOwner owner;
