@@ -16,12 +16,14 @@ import java.util.Map;
 public class ParkingLot {
 
   private int noOfSlots;
+  private ParkingOwner owner;
   private List<Integer> occupiedSlots;
   private List<Integer> freeSlots;
   private Map<Car, Integer> parkingSlots;
 
-  public ParkingLot(int noOfSlots) {
+  public ParkingLot(int noOfSlots, ParkingOwner owner) {
     this.noOfSlots = noOfSlots;
+    this.owner = owner;
     freeSlots = new ArrayList<Integer>();
     occupiedSlots = new ArrayList<Integer>();
     this.parkingSlots = new HashMap<Car, Integer>();
@@ -32,7 +34,7 @@ public class ParkingLot {
     Response response = new Response();
 
     try {
-      checkIfCarIsParked(car);
+      isCarAlreadyParked(car);
       isParkingSlotAvailable();
 
       Integer freeSlot = getFreeSlot();
@@ -44,6 +46,8 @@ public class ParkingLot {
       response.setSuccess(true);
       response.setMessage("Parked successfully");
       response.setParkingSlotNumber(freeSlot);
+
+      notifyOwnerParkingIsFull();
 
     } catch (ParkingLotException e) {
       response.setSuccess(false);
@@ -57,9 +61,9 @@ public class ParkingLot {
     Response response = new Response();
 
     try {
-      checkIfCarIsNotParked(car);
+      Integer slotNo = getSlotForCar(car);
+      notifyOwnerParkingLotHasSpace();
 
-      Integer slotNo = parkingSlots.get(car);
       parkingSlots.remove(car);
 
       freeSlots.add(slotNo);
@@ -75,15 +79,29 @@ public class ParkingLot {
     return response;
   }
 
-  private void checkIfCarIsParked(Car car) throws AlreadyParkedException {
-    if (isCarParked(car)) {
-      throw new AlreadyParkedException();
+  private void notifyOwnerParkingLotHasSpace() {
+    if (occupiedSlots.size() >= noOfSlots) {
+      owner.notifyParkingLotHasSpace();
     }
   }
 
-  private void checkIfCarIsNotParked(Car car) throws NotParkedException {
-    if (!isCarParked(car)) {
+  private void notifyOwnerParkingIsFull() {
+    if (occupiedSlots.size() >= noOfSlots) {
+      owner.notifyParkingLotIsFull();
+    }
+  }
+
+  private Integer getSlotForCar(Car car) throws NotParkedException {
+    Integer slotNo = parkingSlots.get(car);
+    if (slotNo == null) {
       throw new NotParkedException();
+    }
+    return slotNo;
+  }
+
+  private void isCarAlreadyParked(Car car) throws AlreadyParkedException {
+    if (parkingSlots.containsKey(car)) {
+      throw new AlreadyParkedException();
     }
   }
 
@@ -91,10 +109,6 @@ public class ParkingLot {
     if (occupiedSlots.size() == noOfSlots) {
       throw new ParkingFullException();
     }
-  }
-
-  private boolean isCarParked(Car car) {
-    return parkingSlots.containsKey(car);
   }
 
   private Integer getFreeSlot() {
