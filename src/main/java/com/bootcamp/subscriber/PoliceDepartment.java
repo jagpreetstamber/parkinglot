@@ -3,7 +3,6 @@ package com.bootcamp.subscriber;
 import com.bootcamp.APB;
 import com.bootcamp.Car;
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.subscriber.CarNotFoundSubscriber;
 
 public class PoliceDepartment implements CarNotFoundSubscriber {
 

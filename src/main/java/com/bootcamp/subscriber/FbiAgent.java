@@ -1,8 +1,6 @@
 package com.bootcamp.subscriber;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.subscriber.CarNotFoundSubscriber;
-import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 
 public class FbiAgent implements CarNotFoundSubscriber, EightyPercentParkingSubscriber {
 

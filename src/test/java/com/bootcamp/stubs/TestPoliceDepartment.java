@@ -1,8 +1,8 @@
 package com.bootcamp.stubs;
 
 import com.bootcamp.APB;
-import com.bootcamp.subscriber.PoliceDepartment;
 import com.bootcamp.event.CarNotFoundEvent;
+import com.bootcamp.subscriber.PoliceDepartment;
 
 public class TestPoliceDepartment extends PoliceDepartment {
 

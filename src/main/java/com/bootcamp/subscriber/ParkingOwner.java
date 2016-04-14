@@ -1,8 +1,5 @@
 package com.bootcamp.subscriber;
 
-import com.bootcamp.subscriber.HasSpaceSubscriber;
-import com.bootcamp.subscriber.ParkingFullSubscriber;
-
 public class ParkingOwner implements HasSpaceSubscriber, ParkingFullSubscriber {
 
   public void notifyParkingLotIsFull() {

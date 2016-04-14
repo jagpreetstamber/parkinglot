@@ -27,9 +27,9 @@ public class ParkingLot {
   public ParkingLot(int noOfSlots, ParkingOwner owner) {
     this.noOfSlots = noOfSlots;
     this.owner = owner;
-    freeSlots = new ArrayList<Integer>();
-    occupiedSlots = new ArrayList<Integer>();
-    this.parkingSlots = new HashMap<Car, Integer>();
+    freeSlots = new ArrayList<>();
+    occupiedSlots = new ArrayList<>();
+    this.parkingSlots = new HashMap<>();
     initializeSlots(noOfSlots);
   }
 
@@ -92,6 +92,12 @@ public class ParkingLot {
     return response;
   }
 
+  public void isParkingSlotAvailable() throws ParkingFullException {
+    if (occupiedSlots.size() == noOfSlots) {
+      throw new ParkingFullException();
+    }
+  }
+
   private void notifyAgentOnPark() {
     boolean areOccupiedSlotMoreThanEightyPercent = ((occupiedSlots.size() * 100) / noOfSlots) >= 80;
     boolean wasItMoreThanEightyPercentEarlier = (((occupiedSlots.size() - 1) * 100) / noOfSlots) < 80;
@@ -151,12 +157,6 @@ public class ParkingLot {
   private void isCarAlreadyParked(Car car) throws AlreadyParkedException {
     if (parkingSlots.containsKey(car)) {
       throw new AlreadyParkedException();
-    }
-  }
-
-  private void isParkingSlotAvailable() throws ParkingFullException {
-    if (occupiedSlots.size() == noOfSlots) {
-      throw new ParkingFullException();
     }
   }
 
