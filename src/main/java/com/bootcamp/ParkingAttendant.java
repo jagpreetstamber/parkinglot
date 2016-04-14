@@ -24,7 +24,7 @@ public class ParkingAttendant {
     parkingLots.add(lot);
   }
 
-  public Optional<ParkingLot> directToFreeParkingLot() {
+  public Optional<ParkingLot> getAvailableParkingLot() {
 
     Optional<ParkingLot> availableLot = Optional.empty();
     if (parkingLots != null) {
