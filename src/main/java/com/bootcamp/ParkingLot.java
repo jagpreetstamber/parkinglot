@@ -93,6 +93,11 @@ public class ParkingLot {
     return !isParkingAvailable();
   }
 
+  public int getFreeSpace() {
+    return freeSlots.size();
+  }
+
+
   public boolean isParkingAvailable() {
     return !(occupiedSlots.size() == noOfSlots);
   }

@@ -33,7 +33,7 @@ public class ParkingLotTest {
   public void testParkingIsSuccessful() throws Exception {
     ParkingLot parkingLot = new ParkingLot(2, owner);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
     Response response = parkingLot.park(car);
 
     assertTrue(response.isSuccess());
@@ -42,7 +42,7 @@ public class ParkingLotTest {
   @Test
   public void testParkingCarTwice() throws Exception {
     String expected = "Car Already Parked";
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
     ParkingLot parkingLot = new ParkingLot(2, owner);
 
     parkingLot.park(car);
@@ -57,7 +57,7 @@ public class ParkingLotTest {
 
     ParkingLot parkingLot = new ParkingLot(0, owner);
     String expected = "Parking lot is full";
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     Response response = parkingLot.park(car);
 
@@ -68,7 +68,7 @@ public class ParkingLotTest {
   @Test
   public void testRetrieveIsSuccessful() throws Exception {
     ParkingLot parkingLot = new ParkingLot(2, owner);
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
     parkingLot.park(car);
 
     Response response = parkingLot.retrieveCar(car);
@@ -80,7 +80,7 @@ public class ParkingLotTest {
   public void testRetrieveACarThatIsNotParked() throws Exception {
     String expected = "Car not Parked";
     ParkingLot parkingLot = new ParkingLot(2, owner);
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     Response response = parkingLot.retrieveCar(car);
 
@@ -93,7 +93,7 @@ public class ParkingLotTest {
     int expected = 1;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     Response response = parkingLot.park(car);
 
@@ -106,7 +106,7 @@ public class ParkingLotTest {
     int expected = 3;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.retrieveCar(car);
@@ -122,8 +122,8 @@ public class ParkingLotTest {
     int expected = 1;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
-    Car car1 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.park(car1);
@@ -136,7 +136,7 @@ public class ParkingLotTest {
     int expected = 1;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.retrieveCar(car);
@@ -149,7 +149,7 @@ public class ParkingLotTest {
     int expected = 3;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.retrieveCar(car);
@@ -166,8 +166,8 @@ public class ParkingLotTest {
     int expected = 0;
     ParkingLot parkingLot = new ParkingLot(1, owner);
 
-    Car car = new Car();
-    Car car1 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.retrieveCar(car1);
@@ -183,11 +183,11 @@ public class ParkingLotTest {
     ParkingLot parkingLot = new ParkingLot(5, owner);
     parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
-    Car car = new Car();
-    Car car1 = new Car();
-    Car car2 = new Car();
-    Car car3 = new Car();
-    Car car4 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
+    Car car2 = new Car(Car.CarType.HATCHBACK, false);
+    Car car3 = new Car(Car.CarType.HATCHBACK, false);
+    Car car4 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.park(car1);
@@ -206,11 +206,11 @@ public class ParkingLotTest {
     ParkingLot parkingLot = new ParkingLot(5, owner);
     parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
-    Car car = new Car();
-    Car car1 = new Car();
-    Car car2 = new Car();
-    Car car3 = new Car();
-    Car car4 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
+    Car car2 = new Car(Car.CarType.HATCHBACK, false);
+    Car car3 = new Car(Car.CarType.HATCHBACK, false);
+    Car car4 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.park(car1);
@@ -232,11 +232,11 @@ public class ParkingLotTest {
     ParkingLot parkingLot = new ParkingLot(5, owner);
     parkingLot.setEightyPercentSubscribers(eightyPercentSubscribers);
 
-    Car car = new Car();
-    Car car1 = new Car();
-    Car car2 = new Car();
-    Car car3 = new Car();
-    Car car4 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
+    Car car2 = new Car(Car.CarType.HATCHBACK, false);
+    Car car3 = new Car(Car.CarType.HATCHBACK, false);
+    Car car4 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.park(car);
     parkingLot.park(car1);
@@ -261,7 +261,7 @@ public class ParkingLotTest {
     carNotFoundSubscribers.add(police);
     parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
 
-    Car car = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.retrieveCar(car);
 
@@ -276,8 +276,8 @@ public class ParkingLotTest {
     carNotFoundSubscribers.add(police);
     parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
 
-    Car car = new Car();
-    Car car1 = new Car();
+    Car car = new Car(Car.CarType.HATCHBACK, false);
+    Car car1 = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.retrieveCar(car);
     parkingLot.retrieveCar(car1);
@@ -292,7 +292,7 @@ public class ParkingLotTest {
     TestPoliceDepartment police = new TestPoliceDepartment();
     carNotFoundSubscribers.add(police);
     parkingLot.setCarNotFoundSubscribers(carNotFoundSubscribers);
-    Car exceptedCar = new Car();
+    Car exceptedCar = new Car(Car.CarType.HATCHBACK, false);
 
     parkingLot.retrieveCar(exceptedCar);
     CarNotFoundEvent event = police.getEvent();

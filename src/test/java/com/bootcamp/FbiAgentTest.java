@@ -11,7 +11,7 @@ public class FbiAgentTest {
   @Test
   public void testPaperWorkStartsWhenCarIsNotFound() throws Exception {
     TestFbiAgent agent = new TestFbiAgent();
-    Car missingCar = new Car();
+    Car missingCar = new Car(Car.CarType.HATCHBACK, false);
     CarNotFoundEvent event = new CarNotFoundEvent(missingCar);
 
     agent.notifyCarNotFound(event);

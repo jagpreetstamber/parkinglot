@@ -14,7 +14,7 @@ public class PoliceDepartmentTest {
     int expectedReportCount = 1;
     APBStub apbStub = new APBStub();
     PoliceDepartment department = new PoliceDepartment(apbStub);
-    Car missingCar = new Car("NY 12 AB 1234");
+    Car missingCar = new Car("NY 12 AB 1234", Car.CarType.HATCHBACK, false);
     CarNotFoundEvent event = new CarNotFoundEvent(missingCar);
 
     department.notifyCarNotFound(event);
