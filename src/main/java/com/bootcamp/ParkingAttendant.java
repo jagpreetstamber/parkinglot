@@ -7,16 +7,13 @@ import java.util.Optional;
 public class ParkingAttendant {
 
   private List<ParkingLot> parkingLots;
-  private List<ParkingLot> sortedLots;
   private int lastAllocatedLot = -1;
 
   public ParkingAttendant() {
-    sortedLots = new ArrayList<>();
   }
 
   public ParkingAttendant(List<ParkingLot> parkingLots) {
     this.parkingLots = parkingLots;
-    sortedLots = new ArrayList<>();
   }
 
   public void add(ParkingLot lot) {
@@ -29,73 +26,19 @@ public class ParkingAttendant {
   public Optional<ParkingLot> getAvailableParkingLot(Car.CarType type, boolean handicapped) {
     Optional<ParkingLot> availableLotOptional = Optional.empty();
 
+    ParkingLotAllocation strategy = null;
     if (parkingLots != null) {
       if (handicapped) {
-        ParkingLot availableLot = getNextAvailableParkingLot(parkingLots);
-        if (availableLot != null) {
-          availableLotOptional = Optional.of(availableLot);
-        }
+        strategy = new HandicappedLotAllocation(lastAllocatedLot);
       } else if (type.equals(Car.CarType.SEDAN)) {
-        availableLotOptional = getAvailableParkingLotForLargeCars();
+        strategy = new LargerCarsLotAllocation(lastAllocatedLot);
       } else {
-        availableLotOptional = getAvailableParkingLotForSmallCars();
+        strategy = new SmallCarsLotAllocation(lastAllocatedLot);
       }
+
+      availableLotOptional = strategy.getAvailableParkingLot(parkingLots);
+      lastAllocatedLot = strategy.getLastAllocatedLot();
     }
     return availableLotOptional;
-  }
-
-  private Optional<ParkingLot> getAvailableParkingLotForSmallCars() {
-
-    Optional<ParkingLot> availableLotOptional = allocateParkingLotEvenly();
-    if (availableLotOptional.equals(Optional.empty())) {
-      ParkingLot availableLot = getNextAvailableParkingLot(parkingLots);
-      if (availableLot != null) {
-        int index = parkingLots.indexOf(availableLot);
-        lastAllocatedLot = index;
-        availableLotOptional = Optional.of(availableLot);
-      }
-    }
-    return availableLotOptional;
-  }
-
-  private Optional<ParkingLot> getAvailableParkingLotForLargeCars() {
-
-    Optional<ParkingLot> availableLotOptional = Optional.empty();
-    sortedLots.clear();
-    sortedLots.addAll(parkingLots);
-    sortedLots.sort(new ParkingLotComparator());
-    ParkingLot availableLot = getNextAvailableParkingLot(sortedLots);
-    if (availableLot != null) {
-      availableLotOptional = Optional.of(availableLot);
-    }
-    return availableLotOptional;
-  }
-
-  private Optional<ParkingLot> allocateParkingLotEvenly() {
-
-    Optional<ParkingLot> availableLot = Optional.empty();
-    for (ParkingLot lot : parkingLots) {
-      int index = parkingLots.indexOf(lot);
-      boolean isNotLotAllocatedEarlier = lastAllocatedLot % parkingLots.size() < index;
-
-      if (lot.isParkingAvailable() && isNotLotAllocatedEarlier) {
-        availableLot = Optional.of(lot);
-        lastAllocatedLot = index;
-        break;
-      }
-    }
-    return availableLot;
-  }
-
-  private ParkingLot getNextAvailableParkingLot(List<ParkingLot> parkingLots) {
-
-    ParkingLot availableLot = null;
-    for (ParkingLot lot : parkingLots) {
-      if (lot.isParkingAvailable()) {
-        availableLot = lot;
-        break;
-      }
-    }
-    return availableLot;
   }
 }
