@@ -1,5 +1,10 @@
 package com.bootcamp;
 
+import com.bootcamp.allocation.HandicappedLotAllocation;
+import com.bootcamp.allocation.LargerCarsLotAllocation;
+import com.bootcamp.allocation.ParkingLotAllocation;
+import com.bootcamp.allocation.SmallCarsLotAllocation;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

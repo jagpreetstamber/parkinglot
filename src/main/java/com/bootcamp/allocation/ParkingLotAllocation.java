@@ -1,4 +1,6 @@
-package com.bootcamp;
+package com.bootcamp.allocation;
+
+import com.bootcamp.ParkingLot;
 
 import java.util.List;
 import java.util.Optional;

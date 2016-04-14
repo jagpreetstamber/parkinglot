@@ -1,4 +1,8 @@
-package com.bootcamp;
+package com.bootcamp.allocation;
+
+import com.bootcamp.ParkingLot;
+import com.bootcamp.ParkingLotComparator;
+import com.bootcamp.allocation.ParkingLotAllocation;
 
 import java.util.ArrayList;
 import java.util.List;
