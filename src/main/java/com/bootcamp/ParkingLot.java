@@ -1,10 +1,7 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.exception.AlreadyParkedException;
 import com.bootcamp.exception.NotParkedException;
-import com.bootcamp.exception.ParkingFullException;
-import com.bootcamp.exception.ParkingLotException;
 import com.bootcamp.subscriber.CarNotFoundSubscriber;
 import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 import com.bootcamp.subscriber.ParkingOwner;
@@ -44,9 +41,13 @@ public class ParkingLot {
   public Response park(Car car) {
     Response response = new Response();
 
-    try {
-      isCarAlreadyParked(car);
-      isParkingSlotAvailable();
+    if (isCarAlreadyParked(car)) {
+      response.setSuccess(false);
+      response.setMessage("Car Already Parked");
+    } else if (isParkingFull()) {
+      response.setSuccess(false);
+      response.setMessage("Parking lot is full");
+    } else {
 
       Integer freeSlot = getFreeSlot();
       freeSlots.remove(freeSlot);
@@ -61,9 +62,6 @@ public class ParkingLot {
       notifyOwnerParkingIsFull();
 
       notifyAgentOnPark();
-    } catch (ParkingLotException e) {
-      response.setSuccess(false);
-      response.setMessage(e.getMessage());
     }
 
     return response;
@@ -92,10 +90,13 @@ public class ParkingLot {
     return response;
   }
 
-  public void isParkingSlotAvailable() throws ParkingFullException {
-    if (occupiedSlots.size() == noOfSlots) {
-      throw new ParkingFullException();
-    }
+
+  public boolean isParkingFull() {
+    return !isParkingAvailable();
+  }
+
+  public boolean isParkingAvailable() {
+    return !(occupiedSlots.size() == noOfSlots);
   }
 
   private void notifyAgentOnPark() {
@@ -154,10 +155,8 @@ public class ParkingLot {
     return slotNo;
   }
 
-  private void isCarAlreadyParked(Car car) throws AlreadyParkedException {
-    if (parkingSlots.containsKey(car)) {
-      throw new AlreadyParkedException();
-    }
+  private boolean isCarAlreadyParked(Car car) {
+    return parkingSlots.containsKey(car);
   }
 
   private Integer getFreeSlot() {

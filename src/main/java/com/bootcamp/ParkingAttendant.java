@@ -1,7 +1,5 @@
 package com.bootcamp;
 
-import com.bootcamp.exception.ParkingFullException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +7,7 @@ import java.util.Optional;
 public class ParkingAttendant {
 
   private List<ParkingLot> parkingLots;
+  private int lastAllocatedLot = -1;
 
   public ParkingAttendant() {
   }
@@ -28,13 +27,40 @@ public class ParkingAttendant {
 
     Optional<ParkingLot> availableLot = Optional.empty();
     if (parkingLots != null) {
-      for (ParkingLot lot : parkingLots) {
-        try {
-          lot.isParkingSlotAvailable();
-          availableLot = Optional.of(lot);
-          break;
-        } catch (ParkingFullException e) {
-        }
+      availableLot = allocateParkingLotEvenly();
+
+      if (availableLot.equals(Optional.empty())) {
+        availableLot = getNextAvailableParkingLot();
+      }
+    }
+    return availableLot;
+  }
+
+  private Optional<ParkingLot> allocateParkingLotEvenly() {
+
+    Optional<ParkingLot> availableLot = Optional.empty();
+    for (ParkingLot lot : parkingLots) {
+      int index = parkingLots.indexOf(lot);
+      boolean isNotLotAllocatedEarlier = lastAllocatedLot % parkingLots.size() < index;
+
+      if (lot.isParkingAvailable() && isNotLotAllocatedEarlier) {
+        availableLot = Optional.of(lot);
+        lastAllocatedLot = index;
+        break;
+      }
+    }
+    return availableLot;
+  }
+
+  private Optional<ParkingLot> getNextAvailableParkingLot() {
+
+    Optional<ParkingLot> availableLot = Optional.empty();
+    for (ParkingLot lot : parkingLots) {
+      int index = parkingLots.indexOf(lot);
+      if (lot.isParkingAvailable()) {
+        availableLot = Optional.of(lot);
+        lastAllocatedLot = index;
+        break;
       }
     }
     return availableLot;
