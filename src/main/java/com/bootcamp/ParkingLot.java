@@ -1,7 +1,6 @@
 package com.bootcamp;
 
 import com.bootcamp.event.CarNotFoundEvent;
-import com.bootcamp.exception.NotParkedException;
 import com.bootcamp.subscriber.CarNotFoundSubscriber;
 import com.bootcamp.subscriber.EightyPercentParkingSubscriber;
 import com.bootcamp.subscriber.ParkingOwner;
@@ -41,7 +40,7 @@ public class ParkingLot {
   public Response park(Car car) {
     Response response = new Response();
 
-    if (isCarAlreadyParked(car)) {
+    if (isCarParked(car)) {
       response.setSuccess(false);
       response.setMessage("Car Already Parked");
     } else if (isParkingFull()) {
@@ -60,7 +59,6 @@ public class ParkingLot {
       response.setParkingSlotNumber(freeSlot);
 
       notifyOwnerParkingIsFull();
-
       notifyAgentOnPark();
     }
 
@@ -70,23 +68,23 @@ public class ParkingLot {
   public Response retrieveCar(Car car) {
     Response response = new Response();
 
-    try {
+    if (isCarParked(car)) {
       Integer slotNo = getSlotForCar(car);
       notifyOwnerParkingLotHasSpace();
 
       parkingSlots.remove(car);
-
       freeSlots.add(slotNo);
       occupiedSlots.remove(slotNo);
 
       notifyAgentOnRetrieve();
       response.setSuccess(true);
       response.setMessage("UnParked successfully");
-
-    } catch (NotParkedException e) {
+    } else {
+      notifyCarNotFoundSubscribers(car);
       response.setSuccess(false);
-      response.setMessage(e.getMessage());
+      response.setMessage("Car not Parked");
     }
+
     return response;
   }
 
@@ -146,16 +144,11 @@ public class ParkingLot {
     }
   }
 
-  private Integer getSlotForCar(Car car) throws NotParkedException {
-    Integer slotNo = parkingSlots.get(car);
-    if (slotNo == null) {
-      notifyCarNotFoundSubscribers(car);
-      throw new NotParkedException();
-    }
-    return slotNo;
+  private Integer getSlotForCar(Car car) {
+    return parkingSlots.get(car);
   }
 
-  private boolean isCarAlreadyParked(Car car) {
+  private boolean isCarParked(Car car) {
     return parkingSlots.containsKey(car);
   }
 
