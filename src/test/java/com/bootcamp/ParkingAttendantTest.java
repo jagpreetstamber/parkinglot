@@ -16,9 +16,8 @@ public class ParkingAttendantTest {
     ParkingOwner owner = new ParkingOwner();
     ParkingLot freeLot = new ParkingLot(1, owner);
     ParkingLot fullLot = new ParkingLot(0, owner);
-    ParkingAttendant attendant = new ParkingAttendant();
-    attendant.add(freeLot);
-    attendant.add(fullLot);
+    ParkingLotState state = new ParkingLotState(Arrays.asList(freeLot, fullLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car = new Car(Car.CarType.HATCHBACK, false);
 
     Optional<ParkingLot> parkingLotOptional = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false);
@@ -33,8 +32,8 @@ public class ParkingAttendantTest {
   public void testParkingAttendantWhenAllLotsAreFull() throws Exception {
     ParkingOwner owner = new ParkingOwner();
     ParkingLot fullLot = new ParkingLot(0, owner);
-    ParkingAttendant attendant = new ParkingAttendant();
-    attendant.add(fullLot);
+    ParkingLotState state = new ParkingLotState(Arrays.asList(fullLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
 
     Optional<ParkingLot> availableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false);
 
@@ -47,7 +46,8 @@ public class ParkingAttendantTest {
     ParkingOwner owner = new ParkingOwner();
     ParkingLot firstFreeLot = new ParkingLot(2, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
 
     ParkingLot firstAvailableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false).get();
     ParkingLot secondAvailableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false).get();
@@ -62,7 +62,8 @@ public class ParkingAttendantTest {
     ParkingOwner owner = new ParkingOwner();
     ParkingLot freeLot = new ParkingLot(2, owner);
     ParkingLot fullLot = new ParkingLot(0, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(freeLot, fullLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(freeLot, fullLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
 
     ParkingLot firstAvailableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false).get();
     ParkingLot secondAvailableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false).get();
@@ -78,7 +79,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(2, owner);
     ParkingLot fullLot = new ParkingLot(0, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, fullLot, secondFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, fullLot, secondFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
 
 
     ParkingLot firstAvailableLot = attendant.getAvailableParkingLot(Car.CarType.HATCHBACK, false).get();
@@ -97,7 +99,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(1, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
     ParkingLot thirdFreeLot = new ParkingLot(4, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.SEDAN, false);
     Car car2 = new Car(Car.CarType.SEDAN, false);
     Car car3 = new Car(Car.CarType.SEDAN, false);
@@ -120,7 +123,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(1, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
     ParkingLot thirdFreeLot = new ParkingLot(4, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.HATCHBACK, false);
     Car car2 = new Car(Car.CarType.SEDAN, false);
     Car car3 = new Car(Car.CarType.HATCHBACK, false);
@@ -143,7 +147,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(1, owner);
     ParkingLot secondFreeLot = new ParkingLot(1, owner);
     ParkingLot thirdFreeLot = new ParkingLot(1, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.SEDAN, false);
     Car car2 = new Car(Car.CarType.SEDAN, false);
     Car car3 = new Car(Car.CarType.SEDAN, false);
@@ -166,7 +171,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(2, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
     ParkingLot thirdFreeLot = new ParkingLot(3, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.SEDAN, true);
     Car car2 = new Car(Car.CarType.SEDAN, false);
 
@@ -186,7 +192,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(2, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
     ParkingLot thirdFreeLot = new ParkingLot(3, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.HATCHBACK, false);
     Car car2 = new Car(Car.CarType.HATCHBACK, true);
 
@@ -206,7 +213,8 @@ public class ParkingAttendantTest {
     ParkingLot firstFreeLot = new ParkingLot(2, owner);
     ParkingLot secondFreeLot = new ParkingLot(2, owner);
     ParkingLot thirdFreeLot = new ParkingLot(3, owner);
-    ParkingAttendant attendant = new ParkingAttendant(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingLotState state = new ParkingLotState(Arrays.asList(firstFreeLot, secondFreeLot, thirdFreeLot));
+    ParkingAttendant attendant = new ParkingAttendant(state);
     Car car1 = new Car(Car.CarType.SEDAN, true);
     Car car2 = new Car(Car.CarType.HATCHBACK, true);
 

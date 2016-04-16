@@ -1,7 +1,7 @@
 package com.bootcamp.allocation;
 
 import com.bootcamp.ParkingLot;
-import com.bootcamp.allocation.ParkingLotAllocation;
+import com.bootcamp.ParkingLotState;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,36 +9,38 @@ import java.util.Optional;
 public class SmallCarsLotAllocation extends ParkingLotAllocation {
 
   private int lastAllocatedLot;
+  private ParkingLotState state;
 
-  public SmallCarsLotAllocation(int lastAllocatedLot) {
-    super(lastAllocatedLot);
-    this.lastAllocatedLot = lastAllocatedLot;
+  public SmallCarsLotAllocation(ParkingLotState state) {
+    super(state);
+    this.state = state;
   }
 
   @Override
-  public Optional<ParkingLot> getAvailableParkingLot(List<ParkingLot> parkingLots) {
+  public List<ParkingLot> getParkingLots() {
+    return state.getParkingLots();
+  }
 
-    Optional<ParkingLot> availableLotOptional = allocateParkingLotEvenly(parkingLots);
+  @Override
+  public Optional<ParkingLot> getAvailableParkingLot() {
+
+    lastAllocatedLot = state.getLastAllocatedLotIndex();
+    Optional<ParkingLot> availableLotOptional = allocateParkingLotEvenly();
 
     if (availableLotOptional.equals(Optional.empty())) {
-      ParkingLot availableLot = getNextAvailableParkingLot(parkingLots);
+      ParkingLot availableLot = getNextAvailableParkingLot();
 
       if (availableLot != null) {
-        int index = parkingLots.indexOf(availableLot);
-        lastAllocatedLot = index;
+        state.setLastAllocatedLot(availableLot);
         availableLotOptional = Optional.of(availableLot);
       }
     }
     return availableLotOptional;
   }
 
-  @Override
-  public int getLastAllocatedLot() {
-    return lastAllocatedLot;
-  }
+  private Optional<ParkingLot> allocateParkingLotEvenly() {
 
-  private Optional<ParkingLot> allocateParkingLotEvenly(List<ParkingLot> parkingLots) {
-
+    List<ParkingLot> parkingLots = getParkingLots();
     Optional<ParkingLot> availableLot = Optional.empty();
     for (ParkingLot lot : parkingLots) {
       int index = parkingLots.indexOf(lot);
@@ -46,7 +48,7 @@ public class SmallCarsLotAllocation extends ParkingLotAllocation {
 
       if (lot.isParkingAvailable() && isNotLotAllocatedEarlier) {
         availableLot = Optional.of(lot);
-        lastAllocatedLot = index;
+        state.setLastAllocatedLot(lot);
         break;
       }
     }

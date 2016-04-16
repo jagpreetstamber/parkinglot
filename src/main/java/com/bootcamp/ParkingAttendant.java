@@ -5,45 +5,26 @@ import com.bootcamp.allocation.LargerCarsLotAllocation;
 import com.bootcamp.allocation.ParkingLotAllocation;
 import com.bootcamp.allocation.SmallCarsLotAllocation;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class ParkingAttendant {
 
-  private List<ParkingLot> parkingLots;
-  private int lastAllocatedLot = -1;
+  private ParkingLotState state;
 
-  public ParkingAttendant() {
-  }
-
-  public ParkingAttendant(List<ParkingLot> parkingLots) {
-    this.parkingLots = parkingLots;
-  }
-
-  public void add(ParkingLot lot) {
-    if (parkingLots == null) {
-      parkingLots = new ArrayList<>();
-    }
-    parkingLots.add(lot);
+  public ParkingAttendant(ParkingLotState state) {
+    this.state = state;
   }
 
   public Optional<ParkingLot> getAvailableParkingLot(Car.CarType type, boolean handicapped) {
-    Optional<ParkingLot> availableLotOptional = Optional.empty();
 
-    ParkingLotAllocation strategy = null;
-    if (parkingLots != null) {
-      if (handicapped) {
-        strategy = new HandicappedLotAllocation(lastAllocatedLot);
-      } else if (type.equals(Car.CarType.SEDAN)) {
-        strategy = new LargerCarsLotAllocation(lastAllocatedLot);
-      } else {
-        strategy = new SmallCarsLotAllocation(lastAllocatedLot);
-      }
-
-      availableLotOptional = strategy.getAvailableParkingLot(parkingLots);
-      lastAllocatedLot = strategy.getLastAllocatedLot();
+    ParkingLotAllocation strategy;
+    if (handicapped) {
+      strategy = new HandicappedLotAllocation(state);
+    } else if (type.equals(Car.CarType.SEDAN)) {
+      strategy = new LargerCarsLotAllocation(state);
+    } else {
+      strategy = new SmallCarsLotAllocation(state);
     }
-    return availableLotOptional;
+    return strategy.getAvailableParkingLot();
   }
 }

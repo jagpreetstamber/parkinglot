@@ -2,7 +2,7 @@ package com.bootcamp.allocation;
 
 import com.bootcamp.ParkingLot;
 import com.bootcamp.ParkingLotComparator;
-import com.bootcamp.allocation.ParkingLotAllocation;
+import com.bootcamp.ParkingLotState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,18 +10,25 @@ import java.util.Optional;
 
 public class LargerCarsLotAllocation extends ParkingLotAllocation {
 
-  public LargerCarsLotAllocation(int lastAllocatedLot) {
-    super(lastAllocatedLot);
+  private ParkingLotState state;
+
+  public LargerCarsLotAllocation(ParkingLotState state) {
+    super(state);
+    this.state = state;
   }
 
   @Override
-  public Optional<ParkingLot> getAvailableParkingLot(List<ParkingLot> parkingLots) {
+  public List<ParkingLot> getParkingLots() {
+    List<ParkingLot> sortedParkingLots = new ArrayList<>(state.getParkingLots());
+    sortedParkingLots.sort(new ParkingLotComparator());
+    return sortedParkingLots;
+  }
+
+  @Override
+  public Optional<ParkingLot> getAvailableParkingLot() {
 
     Optional<ParkingLot> availableLotOptional = Optional.empty();
-    List<ParkingLot> sortedLots = new ArrayList<>();
-    sortedLots.addAll(parkingLots);
-    sortedLots.sort(new ParkingLotComparator());
-    ParkingLot availableLot = getNextAvailableParkingLot(sortedLots);
+    ParkingLot availableLot = getNextAvailableParkingLot();
     if (availableLot != null) {
       availableLotOptional = Optional.of(availableLot);
     }
